@@ -3,6 +3,7 @@ import pygame
 import random
 import time
 from math import floor, tan, radians
+from drawings import titles as t
 
 SIZE = WIDTH, HEIGHT = 1024, 700
 clock = pygame.time.Clock()
@@ -18,24 +19,25 @@ SuaveRed = (213, 126, 126)
 NormalDarkBlue = (49, 107, 131)
 VibrantGreen = (52, 190, 130)
 SummerOrange = (255, 179, 25)
+BookPage = (249, 216, 167)
 colors = [Orange1, SoftGreen, SkyBlue, AlmostWhite, SuaveRed]
 male_mc_names = ["Wyatt", "James", "Jason", "Zero", "Captain", "Shaun"]
 female_mc_names = ["Sam", "Jessie", "Stephanie", "Claudia", "Anna", "Elizabeth"]
 mc_surnames = ["Mailer", "Bond", "Bourne", "Zhao", "Moustafa", "Mallory", "Solverson", "Gerhardt"]
-writer_names = ["Ernest", "Charles", "Ian", "Olivia", "Ada", "Thomas", "Chloe", "William", "Bob"]
-writer_surnames = ["Cline", "Porta", "Fleming", "Shelby", "B.", "Anderson", "DeNiro", "Russell"]
+writer_names = ["Ernest", "Charles", "Ian", "Olivia", "Ada", "Thomas", "Chloe", "William", "Bob", "Isaac", "C.W."]
+writer_surnames = ["Cline", "Porta", "Fleming", "Shelby", "B.", "Anderson", "DeNiro", "Russell", "Asimov", "Longbottom"]
 genres = ["scifi", "crime", "adventure"]
-main_theme = {
+main_themes = {
 	"scifi": ["spaceship", "planet", "vr-videogame", "deadly-tournament"],
 	"crime": ["murder", "kidnapping", "vanishing", "organized-crime-recent", "organized-crime-old"],
 	"adventure": ["hidden-treasure", "heist", "journey", "magic"]
 }
 settings = {
 	"scifi": {
-		"spaceship": ["spaceship"],
+		"spaceship": ["spaceship", "underwater"],
 		"planet": ["forest", "desert", "ice"],
 		"vr-videogame": ["dystopian-earth"],
-		"deadly-tournament": ["tournament"]
+		"deadly-tournament": ["deadly-tournament"]
 	},
 	"crime": {
 		"murder": ["big-city", "small-town", "region"],
@@ -51,7 +53,7 @@ settings = {
 		"magic": ["school", "reign"]
 	}
 }
-thing_happening = {
+things_happening = {
 	"scifi": {
 		"spaceship": ["stranded", "journey"],
 		"planet": ["stranded", "war"],
@@ -66,7 +68,7 @@ thing_happening = {
 		"organized-crime-old": ["fiction", "true-crime"]
 	},
 	"adventure": {
-		"hidden_treasure": ["hidden-treasure"],
+		"hidden-treasure": ["hidden-treasure"],
 		"heist": ["heist"],
 		"journey": ["vacation", "escape"],
 		"magic": ["magic"]
@@ -76,30 +78,127 @@ setting_names = {
 	"scifi": {
 		"spaceship": ["Alabarda", "USS Fighter", "Turbo Traveler",
 		              "Apollo " + str(random.choice(["L", "LI", "LII", "LIII", "LIV", "LV"]))],
-		"planet": ["Wyh", "Ero", "Mars", "Arrakis"],
-		"vr-videogame": ["OASIS", "Metaverse", "Decentraland", "Double Life"],
-		"deadly-tournament": ["Deadly Games", "Battle Royale", "Octopus Game"]
+		"forest": ["Wyh", "Ero", "UC35523a", "Tropicalia"],
+		"desert": ["Arrakis", "Mars", "Desolated Desert"],
+		"ice": ["Byra", "Pluto", "Glaxiaris"],
+		"dystopian-earth": ["OASIS", "Metaverse", "Decentraland", "Double Life"],
+		"tournament": ["Deadly Games", "Battle Royale", "Octopus Game"]
 	},
 	"crime": {
 		"small-town": ["Tor", "Fargo", "Luverne", "Narvik", "Matera"],
-		"big_city": ["New York", "London", "Paris", "Barcelona", "Rio de Janeiro"],
-		"region": ["Ozarks", "California", "Midwest", "Catalunya", "Spain", "Bodmin"]
+		"big-city": ["New York", "London", "Paris", "Barcelona", "Rio de Janeiro"],
+		"region": ["The Ozarks", "California", "The Midwest", "Catalunya", "Spain", "Bodmin"]
 	},
 	"adventure": {
 		"pirate-island": ["Terre-de-Bas", "Isle of Dogs", "Paros", "Isla Mona"],
 		"mansion": ["The Portland Beacon", "The Lighthouse", "Conelly's Nook"],
 		"museum": ["The JFK Museum", "British History Museum", "Tokyo National Art Center", "The Blofeld Art Gallery"],
 		"bank": ["The Continental", "Bank Of USA", "The Golden Grin", "The First World Bank"],
-		"walking": [""],
-		"road-trip": [""],
-		"school": [""],
-		"reign": [""]
+		"walking": ["100 Acre Wood", "La Fageda d'en Jordà", "Yosemite", "The Thousand Pines", "Wildwood Forest"],
+		"road-trip": ["Route 66", "Europe", "Yellowstone"],
+		"school": ["Hogwarts", "Magnificent Magic Academy", "The School of Magic"],
+		"reign": ["Narnia", "The Fantasy Realm", "Zeitzland", "Izadilonia"]
+	}
+}
+cover_styles = ["background-and-text", "minimalistic", "title-and-image"]
+
+title_functions = {
+	"scifi": {
+		"spaceship": {
+			"spaceship": t.scifi_spaceship_spaceship,
+			"underwater": t.scifi_spaceship_underwater,
+		},
+		"planet": {
+			"forest": t.scifi_planet_forest,
+			"ice": t.scifi_planet_ice,
+			"desert": t.scifi_planet_desert
+		},
+		"vr-videogame": {
+			"dystopian-earth": t.scifi_vr_videogame
+		},
+		"deadly-tournament": {
+			"deadly-tournament": t.scifi_deadly_tournament
+		}
+	},
+	"crime": {
+		"murder": {
+			"fiction": t.crime_murder_fiction,
+			"true-crime": t.crime_murder_true_crime,
+			"cold-case": t.crime_murder_cold_case
+		},
+		"kidnapping": {
+			"fiction": t.crime_kidnapping_fiction,
+			"true-crime": t.crime_kidnapping_true_crime
+		},
+		"vanishing": {
+			"fiction": t.crime_vanishing_fiction,
+			"true-crime": t.crime_vanishing_true_crime,
+			"cold-case": t.crime_vanishing_cold_case,
+		},
+		"organized-crime-recent": {
+			"fiction": t.empty,
+			"true-crime": t.empty
+		},
+		"organized-crime-old": {
+			"fiction": t.empty,
+			"true-crime": t.empty
+		}
+	},
+	"adventure": {
+		"hidden_treasure": {
+			"pirate_island": t.empty,
+			"mansion": t.empty,
+			"museum": t.empty
+		},
+		"heist": {
+			"bank": t.empty,
+			"museum": t.empty
+		},
+		"journey": {
+			"walking": t.empty,
+			"road-trip": t.empty
+		},
+		"magic": {
+			"school": t.empty,
+			"reign": t.empty
+		}
 	}
 }
 
 seed = time.time()
 random.seed(int(seed))
 print(int(seed))
+
+
+class Book:
+	def __init__(self, writer_name, mc_name, genre, main_theme, setting, thing_happening, setting_name, cover_style):
+		self.writer_name = writer_name
+		self.mc_name = mc_name
+		self.genre = genre
+		self.main_theme = main_theme
+		self.setting = setting
+		self.thing_happening = thing_happening
+		self.setting_name = setting_name
+		self.cover_style = cover_style
+		self.title = self.generate_title()
+
+	def generate_title(self):
+		if self.genre == "crime":
+			return title_functions[self.genre][self.main_theme][self.thing_happening](self)
+		return title_functions[self.genre][self.main_theme][self.setting](self)
+
+	def to_string(self):
+		stri = {
+			"writer": self.writer_name,
+			"mc_name": self.mc_name,
+			"genre": self.genre,
+			"theme": self.main_theme,
+			"setting": self.setting,
+			"thing": self.thing_happening,
+			"setting_name": self.setting_name,
+			"cover": self.cover_style
+		}
+		return str(stri)
 
 
 def draw_tablecloth_1(pattern_total_size, pattern_inner_size, bg_color, line_color, line_width):
@@ -181,8 +280,16 @@ def point_shadow_under_90(point, x, y):
 	return tuple([point[0] + x, point[1] + y])
 
 
-def draw_book_shadow(s_angle, s_height, n_of_pages, book_topleft, book_size):
-	x = (n_of_pages // 8) * s_height
+def draw_book_shadow(s_angle, s_height, n_of_pages, book_topleft, book_size, pages=False):
+	if pages:
+		x = n_of_pages // 28
+		alpha = 255
+		color = BookPage
+		s_angle = 45
+	else:
+		x = (n_of_pages // 10) * (s_height / 2)
+		alpha = 180
+		color = (0, 0, 0)
 	if s_angle > 90:
 		y = floor(tan(radians(180 - s_angle)) * x)
 		topleft_shadow = point_shadow_over_90(book_topleft, x, y)
@@ -190,8 +297,11 @@ def draw_book_shadow(s_angle, s_height, n_of_pages, book_topleft, book_size):
 		bottomleft_shadow = point_shadow_over_90(book_bottomleft, x, y)
 		book_bottomright = (book_topleft[0] + book_size[0], book_topleft[1] + book_size[1])
 		bottomright_shadow = point_shadow_over_90(book_bottomright, x, y)
-		polygon_points = [book_topleft, topleft_shadow, bottomleft_shadow, bottomright_shadow, book_bottomright,
-		                  book_bottomleft]
+		x2 = n_of_pages // 28
+		book_extrapoint = point_shadow_under_90(book_bottomright, x2,
+		                                        floor(tan(radians(45)) * x2))
+		polygon_points = [book_topleft, topleft_shadow, bottomleft_shadow, bottomright_shadow, book_extrapoint,
+		                  book_bottomright, book_bottomleft]
 	else:
 		y = floor(tan(radians(s_angle)) * x)
 		book_topright = (book_topleft[0] + book_size[0], book_topleft[1])
@@ -200,18 +310,31 @@ def draw_book_shadow(s_angle, s_height, n_of_pages, book_topleft, book_size):
 		bottomleft_shadow = point_shadow_under_90(book_bottomleft, x, y)
 		book_bottomright = (book_topleft[0] + book_size[0], book_topleft[1] + book_size[1])
 		bottomright_shadow = point_shadow_under_90(book_bottomright, x, y)
+		book_extrapoint = None
+		if s_angle > 45:
+			x2 = n_of_pages // 28
+			book_extrapoint = point_shadow_under_90(book_topright, x2,
+			                                        floor(tan(radians(45)) * x2))
 		polygon_points = [book_topright, topright_shadow, bottomright_shadow, bottomleft_shadow, book_bottomleft,
 		                  book_bottomright]
+		if book_extrapoint is not None:
+			polygon_lasts = polygon_points[1:]
+			new_polygon = [polygon_points[0], book_extrapoint]
+			new_polygon.extend(polygon_lasts)
+			polygon_points = new_polygon
 	s = pygame.Surface(SIZE)
-	s.set_alpha(180)
+	s.set_alpha(alpha)
 	s.fill((0, 0, 255))
 	s.set_colorkey((0, 0, 255))
-	pygame.draw.polygon(s, (0, 0, 0), polygon_points)
+	pygame.draw.polygon(s, color, polygon_points)
+	if pages:
+		pygame.draw.polygon(s, (0, 0, 0), polygon_points, width=3)
+		pygame.draw.line(s, (0, 0, 0), book_bottomright, bottomright_shadow, width=3)
 	SCREEN.blit(source=s, dest=(0, 0))
 
 
 if __name__ in "__main__":
-	book_n_of_pages = random.randint(120, 600)
+	book_n_of_pages = random.randint(120, 400)
 	sun_angle = random.randint(30, 150)
 	if sun_angle == 90:
 		sun_angle = 91
@@ -230,7 +353,21 @@ if __name__ in "__main__":
 	                 border_radius=3)
 	can_rect = draw_can((can_width, can_height), random.choice([NormalDarkBlue, SummerOrange, VibrantGreen]),
 	                    can_topleft)
+	draw_book_shadow(sun_angle, sun_height, book_n_of_pages, can_topleft, (can_width, can_height), pages=True)
 	draw_book_shadow(sun_angle, sun_height, book_n_of_pages, can_topleft, (can_width, can_height))
+	# Create book data
+	b_genre = random.choice(genres)
+	b_theme = random.choice(main_themes[b_genre])
+	b_writer = random.choice(writer_names) + " " + random.choice(writer_surnames)
+	b_mc = random.choice(female_mc_names + male_mc_names) + " " + random.choice(mc_surnames)
+	b_setting_type = random.choice(settings[b_genre][b_theme])
+	b_thing_happening = random.choice(things_happening[b_genre][b_theme])
+	b_setting_name = random.choice(setting_names[b_genre][b_setting_type])
+	book = Book(b_writer, b_mc, b_genre, b_theme, b_setting_type, b_thing_happening, b_setting_name,
+	            random.choice(cover_styles))
+	print(book.to_string())
+	print("TITLE: " + book.title)
+	# Draw book cover
 	while True:
 		clock.tick(60)
 		for event in pygame.event.get():

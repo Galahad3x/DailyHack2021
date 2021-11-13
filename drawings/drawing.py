@@ -19,6 +19,83 @@ NormalDarkBlue = (49, 107, 131)
 VibrantGreen = (52, 190, 130)
 SummerOrange = (255, 179, 25)
 colors = [Orange1, SoftGreen, SkyBlue, AlmostWhite, SuaveRed]
+male_mc_names = ["Wyatt", "James", "Jason", "Zero", "Captain", "Shaun"]
+female_mc_names = ["Sam", "Jessie", "Stephanie", "Claudia", "Anna", "Elizabeth"]
+mc_surnames = ["Mailer", "Bond", "Bourne", "Zhao", "Moustafa", "Mallory", "Solverson", "Gerhardt"]
+writer_names = ["Ernest", "Charles", "Ian", "Olivia", "Ada", "Thomas", "Chloe", "William", "Bob"]
+writer_surnames = ["Cline", "Porta", "Fleming", "Shelby", "B.", "Anderson", "DeNiro", "Russell"]
+genres = ["scifi", "crime", "adventure"]
+main_theme = {
+	"scifi": ["spaceship", "planet", "vr-videogame", "deadly-tournament"],
+	"crime": ["murder", "kidnapping", "vanishing", "organized-crime-recent", "organized-crime-old"],
+	"adventure": ["hidden-treasure", "heist", "journey", "magic"]
+}
+settings = {
+	"scifi": {
+		"spaceship": ["spaceship"],
+		"planet": ["forest", "desert", "ice"],
+		"vr-videogame": ["dystopian-earth"],
+		"deadly-tournament": ["tournament"]
+	},
+	"crime": {
+		"murder": ["big-city", "small-town", "region"],
+		"kidnapping": ["big-city", "small-town"],
+		"vanishing": ["big-city", "small-town", "region"],
+		"organized-crime-recent": ["big-city", "region"],
+		"organized-crime-old": ["big-city", "region"]
+	},
+	"adventure": {
+		"hidden-treasure": ["pirate-island", "mansion", "museum"],
+		"heist": ["bank", "museum"],
+		"journey": ["walking", "road-trip"],
+		"magic": ["school", "reign"]
+	}
+}
+thing_happening = {
+	"scifi": {
+		"spaceship": ["stranded", "journey"],
+		"planet": ["stranded", "war"],
+		"vr-videogame": ["vr-videogame"],
+		"deadly-tournament": ["deadly-tournament"]
+	},
+	"crime": {
+		"murder": ["fiction", "cold-case", "true-crime"],
+		"kidnapping": ["fiction", "true-crime"],
+		"vanishing": ["fiction", "cold-case", "true-crime"],
+		"organized-crime-recent": ["fiction", "true-crime"],
+		"organized-crime-old": ["fiction", "true-crime"]
+	},
+	"adventure": {
+		"hidden_treasure": ["hidden-treasure"],
+		"heist": ["heist"],
+		"journey": ["vacation", "escape"],
+		"magic": ["magic"]
+	}
+}
+setting_names = {
+	"scifi": {
+		"spaceship": ["Alabarda", "USS Fighter", "Turbo Traveler",
+		              "Apollo " + str(random.choice(["L", "LI", "LII", "LIII", "LIV", "LV"]))],
+		"planet": ["Wyh", "Ero", "Mars", "Arrakis"],
+		"vr-videogame": ["OASIS", "Metaverse", "Decentraland", "Double Life"],
+		"deadly-tournament": ["Deadly Games", "Battle Royale", "Octopus Game"]
+	},
+	"crime": {
+		"small-town": ["Tor", "Fargo", "Luverne", "Narvik", "Matera"],
+		"big_city": ["New York", "London", "Paris", "Barcelona", "Rio de Janeiro"],
+		"region": ["Ozarks", "California", "Midwest", "Catalunya", "Spain", "Bodmin"]
+	},
+	"adventure": {
+		"pirate-island": ["Terre-de-Bas", "Isle of Dogs", "Paros", "Isla Mona"],
+		"mansion": ["The Portland Beacon", "The Lighthouse", "Conelly's Nook"],
+		"museum": ["The JFK Museum", "British History Museum", "Tokyo National Art Center", "The Blofeld Art Gallery"],
+		"bank": ["The Continental", "Bank Of USA", "The Golden Grin", "The First World Bank"],
+		"walking": [""],
+		"road-trip": [""],
+		"school": [""],
+		"reign": [""]
+	}
+}
 
 seed = time.time()
 random.seed(int(seed))

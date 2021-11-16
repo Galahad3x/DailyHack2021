@@ -60,6 +60,7 @@ def scifi_planet_forest(book):
 			"Jungle",
 			"Welcome to " + book.setting_name,
 			"Battle for " + book.setting_name,
+			"Tears of " + book.setting_name
 		]
 	return random.choice(titles)
 
@@ -78,7 +79,8 @@ def scifi_planet_desert(book):
 			"Dune",
 			"Welcome to " + book.setting_name,
 			"Battle for " + book.setting_name,
-			"Blood on the Sand"
+			"Blood on the Sand",
+			"Tears of " + book.setting_name
 		]
 	return random.choice(titles)
 
@@ -97,7 +99,8 @@ def scifi_planet_ice(book):
 			"Glaciers",
 			"Welcome to " + book.setting_name,
 			"Battle for " + book.setting_name,
-			book.mc_name + ", The Survivor"
+			book.mc_name + ", The Survivor",
+			"Tears of " + book.setting_name
 		]
 	return random.choice(titles)
 
@@ -146,7 +149,7 @@ def crime_murder_fiction(book):
 			"Terror In " + book.setting_name,
 			"The Beast of " + book.setting_name,
 			"Who Killed " + book.mc_name + "?",
-			book.setting_name + " Murder Story"
+			"The Story of True Crime in " + book.setting_name
 		]
 	return random.choice(titles)
 
@@ -176,7 +179,8 @@ def crime_murder_true_crime(book):
 			"Terror In " + book.setting_name,
 			"The Beast of " + book.setting_name,
 			"Who Killed " + book.mc_name + "?",
-			book.setting_name + " Murder Story"
+			book.setting_name + " Murder Story",
+			"The Story of True Crime in " + book.setting_name
 		]
 	return random.choice(titles)
 
@@ -203,7 +207,8 @@ def crime_murder_cold_case(book):
 			"Murder in " + book.setting_name,
 			"Terror In " + book.setting_name,
 			"The Beast of " + book.setting_name,
-			"Who Killed " + book.mc_name + "?"
+			"Who Killed " + book.mc_name + "?",
+			"The Story of True Crime in " + book.setting_name
 		]
 	return random.choice(titles)
 
@@ -245,6 +250,7 @@ def crime_kidnapping_true_crime(book):
 			"A " + book.setting_name + " Kidnapping"
 		]
 	return random.choice(titles)
+
 
 def crime_vanishing_fiction(book):
 	if book.setting == "big-city":
@@ -321,3 +327,110 @@ def crime_vanishing_cold_case(book):
 		]
 	return random.choice(titles)
 
+
+def crime_organized_recent_fiction(book):
+	if book.setting == "big-city":
+		titles = [
+			book.setting_name,
+			book.setting_name + " In Winter",
+			"Gangs of " + book.setting_name,
+			"The " + book.mc_lastname + "s",
+			"The " + book.mc_lastname + " Concern"
+		]
+	elif book.setting == "small-town":
+		titles = [
+			book.setting_name,
+			"Under " + book.setting_name,
+			"Gangs of " + book.setting_name,
+			"The " + book.mc_lastname + " Limited",
+			"The " + book.mc_lastname + " Concern"
+		]
+	else:
+		titles = [
+			"Lords of Crime",
+			book.mc_name + ": The Master of " + book.setting_name,
+			"The Alternate Economy",
+			"Street Wars"
+		]
+	return random.choice(titles)
+
+
+def crime_organized_recent_true_crime(book):
+	if book.setting == "big-city":
+		titles = [
+			book.setting_name,
+			"Gangs of " + book.setting_name,
+			"The " + book.mc_lastname + "s",
+			"The " + book.mc_lastname + " Concern",
+			"Blood On The Streets"
+		]
+	elif book.setting == "small-town":
+		titles = [
+			book.setting_name,
+			"Under " + book.setting_name,
+			"Gangs of " + book.setting_name,
+			"The " + book.mc_lastname + " Limited",
+			"The " + book.mc_lastname + " Concern"
+		]
+	else:
+		titles = [
+			"The Lords of The Underworld",
+			book.mc_name + ": The Master of " + book.setting_name,
+			"The Alternate Economy",
+			"The Alternate Economy of " + book.setting_name
+		]
+	return random.choice(titles)
+
+
+def crime_organized_old_fiction(book):
+	if book.setting == "big-city":
+		titles = [
+			book.setting_name,
+			book.setting_name + " In Fall",
+			"Gangs of " + book.setting_name,
+			"The " + book.mc_lastname + "s",
+			"The " + book.mc_lastname + " Concern"
+		]
+	elif book.setting == "small-town":
+		titles = [
+			book.setting_name,
+			"Under " + book.setting_name,
+			"Gangs of " + book.setting_name,
+			"The " + book.mc_lastname + " Limited",
+			"The " + book.mc_lastname + " Concern"
+		]
+	else:
+		titles = [
+			"Lords of Crime " + str(random.randint(1920, 1975)),
+			book.mc_name + ": The Master of " + book.setting_name,
+			"The Alternate Economy: " + str(random.randint(1920, 1975)),
+			"The Invisible War of " + book.setting_name
+		]
+	return random.choice(titles)
+
+
+def crime_organized_old_true_crime(book):
+	if book.setting == "big-city":
+		titles = [
+			book.setting_name,
+			"Gangs of " + book.setting_name,
+			"The " + book.mc_lastname + "s",
+			"The " + book.mc_lastname + " Concern",
+			"Blood On The Streets"
+		]
+	elif book.setting == "small-town":
+		titles = [
+			book.setting_name,
+			"Under " + book.setting_name,
+			"Gangs of " + book.setting_name,
+			"The " + book.mc_lastname + " Limited",
+			"The " + book.mc_lastname + " Concern"
+		]
+	else:
+		titles = [
+			"The Lords of The Underworld",
+			book.mc_name + ": The Master of " + book.setting_name,
+			"The Alternate Economy",
+			"The Alternate Economy of " + book.setting_name
+		]
+	return random.choice(titles)

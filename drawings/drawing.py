@@ -37,7 +37,7 @@ settings = {
 		"spaceship": ["spaceship", "underwater"],
 		"planet": ["forest", "desert", "ice"],
 		"vr-videogame": ["dystopian-earth"],
-		"deadly-tournament": ["deadly-tournament"]
+		"deadly-tournament": ["tournament"]
 	},
 	"crime": {
 		"murder": ["big-city", "small-town", "region"],
@@ -133,20 +133,20 @@ title_functions = {
 		"vanishing": {
 			"fiction": t.crime_vanishing_fiction,
 			"true-crime": t.crime_vanishing_true_crime,
-			"cold-case": t.crime_vanishing_cold_case,
+			"cold-case": t.crime_vanishing_cold_case
 		},
 		"organized-crime-recent": {
-			"fiction": t.empty,
-			"true-crime": t.empty
+			"fiction": t.crime_organized_recent_fiction,
+			"true-crime": t.crime_organized_recent_true_crime
 		},
 		"organized-crime-old": {
-			"fiction": t.empty,
-			"true-crime": t.empty
+			"fiction": t.crime_organized_old_fiction,
+			"true-crime": t.crime_organized_old_true_crime
 		}
 	},
 	"adventure": {
-		"hidden_treasure": {
-			"pirate_island": t.empty,
+		"hidden-treasure": {
+			"pirate-island": t.empty,
 			"mansion": t.empty,
 			"museum": t.empty
 		},
@@ -171,7 +171,10 @@ print(int(seed))
 
 
 class Book:
-	def __init__(self, writer_name, mc_name, genre, main_theme, setting, thing_happening, setting_name, cover_style):
+	def __init__(self, writer_name, mc_name, genre,
+	             main_theme, setting, thing_happening, setting_name, cover_style, mc_firstname, mc_lastname):
+		self.mc_lastname = mc_lastname
+		self.mc_firstname = mc_firstname
 		self.writer_name = writer_name
 		self.mc_name = mc_name
 		self.genre = genre
@@ -359,12 +362,14 @@ if __name__ in "__main__":
 	b_genre = random.choice(genres)
 	b_theme = random.choice(main_themes[b_genre])
 	b_writer = random.choice(writer_names) + " " + random.choice(writer_surnames)
-	b_mc = random.choice(female_mc_names + male_mc_names) + " " + random.choice(mc_surnames)
+	b_mc_name = random.choice(female_mc_names + male_mc_names)
+	b_mc_surname = random.choice(mc_surnames)
+	b_mc = b_mc_name + " " + b_mc_surname
 	b_setting_type = random.choice(settings[b_genre][b_theme])
 	b_thing_happening = random.choice(things_happening[b_genre][b_theme])
 	b_setting_name = random.choice(setting_names[b_genre][b_setting_type])
 	book = Book(b_writer, b_mc, b_genre, b_theme, b_setting_type, b_thing_happening, b_setting_name,
-	            random.choice(cover_styles))
+	            random.choice(cover_styles), b_mc_name, b_mc_surname)
 	print(book.to_string())
 	print("TITLE: " + book.title)
 	# Draw book cover

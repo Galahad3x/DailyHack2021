@@ -397,7 +397,8 @@ def crime_organized_old_fiction(book):
 			"Under " + book.setting_name,
 			"Gangs of " + book.setting_name,
 			"The " + book.mc_lastname + " Limited",
-			"The " + book.mc_lastname + " Concern"
+			"The " + book.mc_lastname + " Concern",
+			"Palindrome"
 		]
 	else:
 		titles = [
@@ -433,4 +434,116 @@ def crime_organized_old_true_crime(book):
 			"The Alternate Economy",
 			"The Alternate Economy of " + book.setting_name
 		]
+	return random.choice(titles)
+
+
+def adventure_treasure_island(book):
+	titles = [
+		book.mc_name + ": Treasure Hunter",
+		"The Treasure of " + book.setting_name,
+		"Chest of Gold",
+		"Pirates of " + book.setting_name,
+		book.mc_name + " and The Hidden Treasure"
+	]
+	return random.choice(titles)
+
+
+def adventure_treasure_mansion(book):
+	titles = [
+		book.mc_name + ": Treasure Hunter",
+		"The Treasure of " + book.setting_name,
+		"The Secret Room",
+		"The Mystery of " + book.setting_name,
+		book.mc_name + " in " + book.setting_name,
+		"From Dusk til " + book.setting_name
+	]
+	return random.choice(titles)
+
+
+def adventure_treasure_museum(book):
+	titles = [
+		book.mc_name + ": Treasure Hunter",
+		"The Treasure of " + book.setting_name,
+		"The Secret Room ",
+		"The Mystery of " + book.setting_name,
+		book.mc_name + " visits " + book.setting_name,
+		"Under " + book.setting_name
+	]
+	return random.choice(titles)
+
+
+def adventure_heist_bank(book):
+	titles = [
+		"Hands Up",
+		"Payday",
+		"The Bandits of " + book.setting_name,
+		"The " + book.setting_name + " Job",
+	]
+	return random.choice(titles)
+
+
+def adventure_heist_museum(book):
+	titles = [
+		"The Diamond",
+		"The " + book.setting_name + " Job",
+		"Finders Keepers",
+		"Who broke into " + book.setting_name + "?"
+	]
+	return random.choice(titles)
+
+
+def adventure_journey_walking(book):
+	if book.thing_happening == "vacation":
+		titles = [
+			"Where are we?",
+			"The " + book.mc_lastname + "s in " + book.setting_name,
+			book.setting_name + " Local Guide",
+			"The magic of " + book.setting_name
+		]
+	else:
+		titles = [
+			"No escape",
+			"Lost in " + book.setting_name,
+			"Who Rules The Land of Denial?",
+			"The Law of Inevitability",
+			"Escape from " + book.setting_name,
+			"The Muddy Road"
+		]
+	return random.choice(titles)
+
+
+def adventure_journey_roadtrip(book):
+	if book.thing_happening == "vacation":
+		titles = [
+			"We're the " + book.mc_lastname + "s",
+			"Our Last Summer In " + book.setting_name,
+			"The Corners of " + book.setting_name,
+			book.mc_name + " into the wild",
+		]
+	else:
+		titles = [
+			"War in " + book.setting_name,
+			"Through " + book.setting_name,
+			"Time is Up"
+		]
+	return random.choice(titles)
+
+
+def adventure_magic_school(book):
+	titles = [
+		"Welcome to " + book.setting_name,
+		book.mc_name + " and The Hidden Spell",
+		book.mc_name + " and The Invisible Shroud",
+		"Brilliant"
+	]
+	return random.choice(titles)
+
+
+def adventure_magic_reign(book):
+	titles = [
+		"Welcome to " + book.setting_name,
+		book.setting_name,
+		"The Kingdom of " + book.setting_name,
+		book.mc_name + " visits " + book.setting_name
+	]
 	return random.choice(titles)

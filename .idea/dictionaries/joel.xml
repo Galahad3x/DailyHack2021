@@ -3,6 +3,7 @@
     <words>
       <w>alabarda</w>
       <w>arrakis</w>
+      <w>blasé</w>
       <w>blofeld</w>
       <w>bodmin</w>
       <w>bottomleft</w>
@@ -30,10 +31,12 @@
       <w>matera</w>
       <w>metaverse</w>
       <w>moustafa</w>
+      <w>myfont</w>
       <w>narvik</w>
       <w>niro</w>
       <w>paros</w>
       <w>porta</w>
+      <w>roadtrip</w>
       <w>royale</w>
       <w>rusell</w>
       <w>scifi</w>
@@ -47,6 +50,7 @@
       <w>wildwood</w>
       <w>zeitzland</w>
       <w>zhao</w>
+      <w>zissou</w>
     </words>
   </dictionary>
 </component>

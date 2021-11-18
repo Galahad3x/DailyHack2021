@@ -8,6 +8,7 @@ from drawings import titles as t
 SIZE = WIDTH, HEIGHT = 1024, 700
 clock = pygame.time.Clock()
 pygame.display.init()
+pygame.font.init()
 
 SCREEN = pygame.display.set_mode(SIZE, pygame.DOUBLEBUF, 32)
 
@@ -20,7 +21,7 @@ NormalDarkBlue = (49, 107, 131)
 VibrantGreen = (52, 190, 130)
 SummerOrange = (255, 179, 25)
 BookPage = (249, 216, 167)
-colors = [Orange1, SoftGreen, SkyBlue, AlmostWhite, SuaveRed]
+colors = [Orange1, SoftGreen, SkyBlue, AlmostWhite, SuaveRed, NormalDarkBlue, VibrantGreen, SummerOrange]
 male_mc_names = ["Wyatt", "James", "Jason", "Zero", "Captain", "Shaun"]
 female_mc_names = ["Sam", "Jessie", "Stephanie", "Claudia", "Anna", "Elizabeth"]
 mc_surnames = ["Mailer", "Bond", "Bourne", "Zhao", "Moustafa", "Mallory", "Solverson", "Gerhardt"]
@@ -78,6 +79,8 @@ setting_names = {
 	"scifi": {
 		"spaceship": ["Alabarda", "USS Fighter", "Turbo Traveler",
 		              "Apollo " + str(random.choice(["L", "LI", "LII", "LIII", "LIV", "LV"]))],
+		"underwater": ["Alabarda", "Zissou", "Turbo Traveler",
+		               "Ultramarine " + str(random.choice(["L", "LI", "LII", "LIII", "LIV", "LV"]))],
 		"forest": ["Wyh", "Ero", "UC35523a", "Tropicalia"],
 		"desert": ["Arrakis", "Mars", "Desolated Desert"],
 		"ice": ["Byra", "Pluto", "Glaxiaris"],
@@ -85,7 +88,7 @@ setting_names = {
 		"tournament": ["Deadly Games", "Battle Royale", "Octopus Game"]
 	},
 	"crime": {
-		"small-town": ["Tor", "Fargo", "Luverne", "Narvik", "Matera"],
+		"small-town": ["Tor", "Fargo", "Luverne", "Narvik", "Matera", "Ennui-sur-Blasé"],
 		"big-city": ["New York", "London", "Paris", "Barcelona", "Rio de Janeiro"],
 		"region": ["The Ozarks", "California", "The Midwest", "Catalunya", "Spain", "Bodmin"]
 	},
@@ -94,13 +97,15 @@ setting_names = {
 		"mansion": ["The Portland Beacon", "The Lighthouse", "Conelly's Nook"],
 		"museum": ["The JFK Museum", "British History Museum", "Tokyo National Art Center", "The Blofeld Art Gallery"],
 		"bank": ["The Continental", "Bank Of USA", "The Golden Grin", "The First World Bank"],
-		"walking": ["100 Acre Wood", "La Fageda d'en Jordà", "Yosemite", "The Thousand Pines", "Wildwood Forest"],
+		"walking": ["The 100 Acre Wood", "La Fageda d'en Jordà", "Yosemite", "The Thousand Pines",
+		            "The Wildwood Forest"],
 		"road-trip": ["Route 66", "Europe", "Yellowstone"],
-		"school": ["Hogwarts", "Magnificent Magic Academy", "The School of Magic"],
+		"school": ["Hogwarts", "The Magnificent Magic Academy", "The School of Magic"],
 		"reign": ["Narnia", "The Fantasy Realm", "Zeitzland", "Izadilonia"]
 	}
 }
-cover_styles = ["background-and-text", "minimalistic", "title-and-image"]
+cover_styles = ["background-and-text"]
+# , "minimalistic", "title-and-image"
 
 title_functions = {
 	"scifi": {
@@ -117,7 +122,7 @@ title_functions = {
 			"dystopian-earth": t.scifi_vr_videogame
 		},
 		"deadly-tournament": {
-			"deadly-tournament": t.scifi_deadly_tournament
+			"tournament": t.scifi_deadly_tournament
 		}
 	},
 	"crime": {
@@ -146,21 +151,21 @@ title_functions = {
 	},
 	"adventure": {
 		"hidden-treasure": {
-			"pirate-island": t.empty,
-			"mansion": t.empty,
-			"museum": t.empty
+			"pirate-island": t.adventure_treasure_island,
+			"mansion": t.adventure_treasure_mansion,
+			"museum": t.adventure_treasure_museum
 		},
 		"heist": {
-			"bank": t.empty,
-			"museum": t.empty
+			"bank": t.adventure_heist_bank,
+			"museum": t.adventure_heist_museum
 		},
 		"journey": {
-			"walking": t.empty,
-			"road-trip": t.empty
+			"walking": t.adventure_journey_walking,
+			"road-trip": t.adventure_journey_roadtrip
 		},
 		"magic": {
-			"school": t.empty,
-			"reign": t.empty
+			"school": t.adventure_magic_school,
+			"reign": t.adventure_magic_reign
 		}
 	}
 }
@@ -173,6 +178,12 @@ print(int(seed))
 class Book:
 	def __init__(self, writer_name, mc_name, genre,
 	             main_theme, setting, thing_happening, setting_name, cover_style, mc_firstname, mc_lastname):
+		self.can_height = random.randint(160, 300) * 2
+		self.can_width = random.randint(160, 220) * 2
+		self.can_topleft = (WIDTH // 2 - self.can_width // 2, HEIGHT // 2 - self.can_height // 2)
+		self.sun_height = random.randint(1, 3)
+		self.sun_angle = random.randint(30, 150)
+		self.book_n_of_pages = random.randint(120, 400)
 		self.mc_lastname = mc_lastname
 		self.mc_firstname = mc_firstname
 		self.writer_name = writer_name
@@ -184,6 +195,20 @@ class Book:
 		self.setting_name = setting_name
 		self.cover_style = cover_style
 		self.title = self.generate_title()
+
+	def draw_book(self):
+		if self.sun_angle == 90:
+			self.sun_angle = 91
+		pygame.draw.rect(SCREEN, (0, 0, 0),
+		                 pygame.Rect((self.can_topleft[0] - 2, self.can_topleft[1] - 2),
+		                             (self.can_width + 4, self.can_height + 4)),
+		                 border_radius=3)
+		draw_can((self.can_width, self.can_height), (0, 0, 0),
+		         self.can_topleft)
+		draw_book_shadow(self.sun_angle, self.sun_height, self.book_n_of_pages, self.can_topleft,
+		                 (self.can_width, self.can_height), pages=True)
+		draw_book_shadow(self.sun_angle, self.sun_height, self.book_n_of_pages, self.can_topleft,
+		                 (self.can_width, self.can_height))
 
 	def generate_title(self):
 		if self.genre == "crime":
@@ -202,6 +227,63 @@ class Book:
 			"cover": self.cover_style
 		}
 		return str(stri)
+
+	def draw_background(self):
+		if self.genre == "scifi":
+			book_s = pygame.Surface((self.can_width, self.can_height))
+			book_s.set_colorkey((0, 0, 0))
+			for i in range(random.randint(10, 15)):
+				book.draw_image(book_s, min_size=(self.can_width // 15, self.can_height // 15),
+				                max_size=(self.can_width // 10, self.can_height // 10), type="star")
+			SCREEN.blit(source=book_s, dest=self.can_topleft)
+
+	def draw_cover(self):
+		if self.cover_style == "background-and-text":
+			self.draw_background()
+			self.write_full_text()
+
+	def draw_image(self, s, min_size, max_size, type):
+		image_width = random.randint(min_size[0], max_size[0])
+		image_height = random.randint(min_size[1], max_size[1])
+		image_x = random.randint(0, self.can_width)
+		image_y = random.randint(0, self.can_height)
+		pygame.draw.rect(s, random.choice(colors), pygame.Rect((image_x, image_y), (image_width, image_height)))
+
+	def write_full_text(self):
+		# Calculate how big every word must be
+		total_length = len(self.title.split(" ")) + 2
+		letter_height = self.can_height // total_length
+		fonts = ["/drawings/fonts/Game Of Squids.ttf", "/drawings/fonts/OriginTech personal use.ttf",
+		         "/drawings/fonts/Robot Invaders.ttf", "/drawings/fonts/Robot Invaders Italic.ttf"]
+		font_name = sys.path[1] + random.choice(fonts)
+		myfont = pygame.font.Font(font_name, letter_height // 2)
+		for word in self.title.split(" ") + self.writer_name.split(" "):
+			print("Size thing")
+			test_s = myfont.render(word, False, (0, 0, 0))
+			while test_s.get_width() > self.can_width:
+				letter_height = int(floor(letter_height) * 0.8)
+				myfont = pygame.font.Font(font_name, letter_height)
+				test_s = myfont.render(word, False, (0, 0, 0))
+		color = random.choice(colors)
+		myfont_small = pygame.font.Font(font_name, letter_height // 2)
+		# Draw the words
+		y = 0
+		for word in self.title.split(" "):
+			text_s = myfont.render(word, False, color)
+			SCREEN.blit(source=text_s, dest=(
+				self.can_topleft[0] + self.can_width // 2 - text_s.get_width() // 2, self.can_topleft[1] + y))
+			y += letter_height
+		y -= letter_height // 2
+		y += 5
+		text_s = myfont_small.render("by", False, color)
+		SCREEN.blit(source=text_s,
+		            dest=(self.can_topleft[0] + self.can_width // 2 - text_s.get_width() // 2, self.can_topleft[1] + y))
+		y += letter_height // 2
+		for name in self.writer_name.split(" "):
+			text_s = myfont.render(name, False, color)
+			SCREEN.blit(source=text_s, dest=(
+				self.can_topleft[0] + self.can_width // 2 - text_s.get_width() // 2, self.can_topleft[1] + y))
+			y += letter_height
 
 
 def draw_tablecloth_1(pattern_total_size, pattern_inner_size, bg_color, line_color, line_width):
@@ -337,27 +419,12 @@ def draw_book_shadow(s_angle, s_height, n_of_pages, book_topleft, book_size, pag
 
 
 if __name__ in "__main__":
-	book_n_of_pages = random.randint(120, 400)
-	sun_angle = random.randint(30, 150)
-	if sun_angle == 90:
-		sun_angle = 91
-	sun_height = random.randint(1, 3)
 	total_size = random.randint(100, 280)
 	inner_size = random.randint(max(20, total_size - 120), total_size - 40)
 	bg_color = random.choice([AlmostWhite, SkyBlue])
 	line_color = random.choice([Orange1, SuaveRed, SoftGreen])
 	line_w = random.randint(1, 3) * 2
 	draw_tablecloth_1(total_size, inner_size, bg_color, line_color, line_w)
-	can_width = random.randint(160, 220) * 2
-	can_height = random.randint(160, 300) * 2
-	can_topleft = (WIDTH // 2 - can_width // 2, HEIGHT // 2 - can_height // 2)
-	pygame.draw.rect(SCREEN, (0, 0, 0),
-	                 pygame.Rect((can_topleft[0] - 2, can_topleft[1] - 2), (can_width + 4, can_height + 4)),
-	                 border_radius=3)
-	can_rect = draw_can((can_width, can_height), random.choice([NormalDarkBlue, SummerOrange, VibrantGreen]),
-	                    can_topleft)
-	draw_book_shadow(sun_angle, sun_height, book_n_of_pages, can_topleft, (can_width, can_height), pages=True)
-	draw_book_shadow(sun_angle, sun_height, book_n_of_pages, can_topleft, (can_width, can_height))
 	# Create book data
 	b_genre = random.choice(genres)
 	b_theme = random.choice(main_themes[b_genre])
@@ -372,7 +439,9 @@ if __name__ in "__main__":
 	            random.choice(cover_styles), b_mc_name, b_mc_surname)
 	print(book.to_string())
 	print("TITLE: " + book.title)
+	book.draw_book()
 	# Draw book cover
+	book.draw_cover()
 	while True:
 		clock.tick(60)
 		for event in pygame.event.get():

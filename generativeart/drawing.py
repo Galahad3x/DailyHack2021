@@ -255,7 +255,13 @@ class Book:
 		image_height = random.randint(min_size[1], max_size[1])
 		image_x = random.randint(0, self.can_width)
 		image_y = random.randint(0, self.can_height)
-		pygame.draw.rect(s, random.choice(colors), pygame.Rect((image_x, image_y), (image_width, image_height)))
+		if type == "star":
+			image_route = "pngs/star.png"
+		image = pygame.image.load(image_route)
+		image.set_colorkey((255, 255, 255))
+		image.convert_alpha()
+		image = pygame.transform.scale(image, (image_width, image_height))
+		s.blit(source=image, dest=(image_x, image_y))
 
 	def write_full_text(self):
 		# Calculate how big every word must be

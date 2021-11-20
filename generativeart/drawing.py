@@ -2,8 +2,13 @@ import sys
 import pygame
 import random
 import time
+import os
 from math import floor, tan, radians
-from drawings import titles as t
+
+try:
+	from generativeart import titles as t
+except ModuleNotFoundError:
+	import titles as t
 
 SIZE = WIDTH, HEIGHT = 1024, 700
 clock = pygame.time.Clock()
@@ -170,7 +175,10 @@ title_functions = {
 	}
 }
 
-seed = time.time()
+try:
+	seed = sys.argv[1]
+except IndexError:
+	seed = time.time()
 random.seed(int(seed))
 print(int(seed))
 
@@ -253,10 +261,18 @@ class Book:
 		# Calculate how big every word must be
 		total_length = len(self.title.split(" ")) + 2
 		letter_height = self.can_height // total_length
-		fonts = ["/drawings/fonts/Game Of Squids.ttf", "/drawings/fonts/OriginTech personal use.ttf",
-		         "/drawings/fonts/Robot Invaders.ttf", "/drawings/fonts/Robot Invaders Italic.ttf"]
-		font_name = sys.path[1] + random.choice(fonts)
-		myfont = pygame.font.Font(font_name, letter_height // 2)
+		try:
+			fonts_base = "/generativeart/fonts/"
+			fonts = [fonts_base + "Game Of Squids.ttf", fonts_base + "OriginTech personal use.ttf",
+			         fonts_base + "Robot Invaders.ttf", fonts_base + "Robot Invaders Italic.ttf"]
+			font_name = sys.path[1] + random.choice(fonts)
+			myfont = pygame.font.Font(font_name, letter_height // 2)
+		except FileNotFoundError:
+			fonts_base = os.getcwd() + "/fonts/"
+			fonts = [fonts_base + "Game Of Squids.ttf", fonts_base + "OriginTech personal use.ttf",
+			         fonts_base + "Robot Invaders.ttf", fonts_base + "Robot Invaders Italic.ttf"]
+			font_name = random.choice(fonts)
+			myfont = pygame.font.Font(font_name, letter_height // 2)
 		for word in self.title.split(" ") + self.writer_name.split(" "):
 			print("Size thing")
 			test_s = myfont.render(word, False, (0, 0, 0))

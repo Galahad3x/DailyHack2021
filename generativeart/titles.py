@@ -1,10 +1,4 @@
-import drawings as d
 import random
-
-
-def empty(book):
-	return "WIP"
-
 
 def scifi_spaceship_spaceship(book):
 	if book.thing_happening == "spaceship":

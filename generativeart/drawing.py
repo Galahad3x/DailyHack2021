@@ -33,6 +33,10 @@ mc_surnames = ["Mailer", "Bond", "Bourne", "Zhao", "Moustafa", "Mallory", "Solve
 writer_names = ["Ernest", "Charles", "Ian", "Olivia", "Ada", "Thomas", "Chloe", "William", "Bob", "Isaac", "C.W."]
 writer_surnames = ["Cline", "Porta", "Fleming", "Shelby", "B.", "Anderson", "DeNiro", "Russell", "Asimov", "Longbottom"]
 genres = ["scifi", "crime", "adventure"]
+scifi_bg_colors = [(20, 20, 20), SummerOrange, AlmostWhite, SuaveRed]
+scifi_text_colors = [(49, 107, 131), (109, 130, 153), (58, 99, 81)]
+crime_bg_colors = [(20, 20, 20), (49, 107, 131), (212, 80, 121), (133, 96, 63)]
+crime_text_colors = [Orange1, (230, 181, 102), VibrantGreen, (6, 68, 32)]
 main_themes = {
 	"scifi": ["spaceship", "planet", "vr-videogame", "deadly-tournament"],
 	"crime": ["murder", "kidnapping", "vanishing", "organized-crime-recent", "organized-crime-old"],
@@ -100,8 +104,9 @@ setting_names = {
 	"adventure": {
 		"pirate-island": ["Terre-de-Bas", "Isle of Dogs", "Paros", "Isla Mona"],
 		"mansion": ["The Portland Beacon", "The Lighthouse", "Conelly's Nook"],
-		"museum": ["The JFK Museum", "British History Museum", "Tokyo National Art Center", "The Blofeld Art Gallery"],
-		"bank": ["The Continental", "Bank Of USA", "The Golden Grin", "The First World Bank"],
+		"museum": ["The JFK Museum", "The British History Museum", "The Tokyo National Art Center",
+		           "The Blofeld Art Gallery"],
+		"bank": ["The Continental", "The Bank Of USA", "The Golden Grin", "The First World Bank"],
 		"walking": ["The 100 Acre Wood", "La Fageda d'en Jordà", "Yosemite", "The Thousand Pines",
 		            "The Wildwood Forest"],
 		"road-trip": ["Route 66", "Europe", "Yellowstone"],
@@ -237,12 +242,36 @@ class Book:
 		return str(stri)
 
 	def draw_background(self):
-		if self.genre == "scifi":
+		if self.genre == "crime":
 			book_s = pygame.Surface((self.can_width, self.can_height))
+			book_s.fill(random.choice(crime_bg_colors))
+			book_s.set_colorkey((0, 0, 0))
+		elif self.genre == "scifi":
+			book_s = pygame.Surface((self.can_width, self.can_height))
+			book_s.fill(random.choice(scifi_bg_colors))
 			book_s.set_colorkey((0, 0, 0))
 			for i in range(random.randint(10, 15)):
-				book.draw_image(book_s, min_size=(self.can_width // 15, self.can_height // 15),
-				                max_size=(self.can_width // 10, self.can_height // 10), type="star")
+				if self.setting == "spaceship":
+					book.draw_image(book_s, min_size=(self.can_width // 15, self.can_height // 15),
+					                max_size=(self.can_width // 10, self.can_height // 10), type="star")
+				if self.setting == "underwater":
+					book.draw_image(book_s, min_size=(self.can_width // 15, self.can_height // 15),
+					                max_size=(self.can_width // 10, self.can_height // 10), type="bubble")
+				if self.setting == "forest":
+					book.draw_image(book_s, min_size=(self.can_width // 15, self.can_height // 15),
+					                max_size=(self.can_width // 10, self.can_height // 10), type="leaf")
+				if self.setting == "desert":
+					book.draw_image(book_s, min_size=(self.can_width // 15, self.can_height // 15),
+					                max_size=(self.can_width // 10, self.can_height // 10), type="wind")
+				if self.setting == "ice":
+					book.draw_image(book_s, min_size=(self.can_width // 15, self.can_height // 15),
+					                max_size=(self.can_width // 10, self.can_height // 10), type="snow")
+				if self.setting == "dystopian-earth":
+					book.draw_image(book_s, min_size=(self.can_width // 15, self.can_height // 15),
+					                max_size=(self.can_width // 10, self.can_height // 10), type="xpoints")
+				if self.setting == "tournament":
+					book.draw_image(book_s, min_size=(self.can_width // 15, self.can_height // 15),
+					                max_size=(self.can_width // 10, self.can_height // 10), type="fire")
 			SCREEN.blit(source=book_s, dest=self.can_topleft)
 
 	def draw_cover(self):
@@ -257,55 +286,96 @@ class Book:
 		image_y = random.randint(0, self.can_height)
 		if type == "star":
 			image_route = "pngs/star.png"
+		elif type == "bubble":
+			image_route = "pngs/bubble.png"
+		elif type == "leaf":
+			image_route = "pngs/leaf.png"
+		elif type == "wind":
+			image_route = "pngs/wind.png"
+		elif type == "snow":
+			image_route = "pngs/snow.png"
+		elif type == "xpoints":
+			image_route = "pngs/xpoints.png"
+		elif type == "fire":
+			image_route = "pngs/fire.png"
 		image = pygame.image.load(image_route)
 		image.set_colorkey((255, 255, 255))
-		image.convert_alpha()
+		# 		image.convert_alpha()
 		image = pygame.transform.scale(image, (image_width, image_height))
+		image = pygame.transform.rotate(image, random.randint(0, 360))
+		image.set_colorkey((255, 255, 255))
 		s.blit(source=image, dest=(image_x, image_y))
 
 	def write_full_text(self):
 		# Calculate how big every word must be
-		total_length = len(self.title.split(" ")) + 2
-		letter_height = self.can_height // total_length
+		total_length = len(self.title.split(" ")) + 1
+		separate = False
+		letter_height = self.can_height
 		try:
 			fonts_base = "/generativeart/fonts/"
-			fonts = [fonts_base + "Game Of Squids.ttf", fonts_base + "OriginTech personal use.ttf",
-			         fonts_base + "Robot Invaders.ttf", fonts_base + "Robot Invaders Italic.ttf"]
+			if self.genre == "scifi":
+				fonts = [fonts_base + "Game Of Squids.ttf", fonts_base + "OriginTech personal use.ttf",
+				         fonts_base + "Robot Invaders.ttf", fonts_base + "Robot Invaders Italic.ttf"]
+			elif self.genre == "crime":
+				fonts = [fonts_base + "Fargo.otf", fonts_base + "Molot.otf", fonts_base + "Maiden Crimes.otf",
+				         fonts_base + "LEMONMILK-Regular.otf"]
+			else:
+				fonts = [fonts_base + "HungryCharlie-Bold.ttf", fonts_base + "HungryCharlie-Serif.ttf",
+				         fonts_base + "LEMONMILK-BoldItalic.otf", fonts_base + "LEMONMILK-Regular.otf",
+				         fonts_base + "handwriting-draft_free-version.ttf"]
 			font_name = sys.path[1] + random.choice(fonts)
 			myfont = pygame.font.Font(font_name, letter_height // 2)
 		except FileNotFoundError:
 			fonts_base = os.getcwd() + "/fonts/"
-			fonts = [fonts_base + "Game Of Squids.ttf", fonts_base + "OriginTech personal use.ttf",
-			         fonts_base + "Robot Invaders.ttf", fonts_base + "Robot Invaders Italic.ttf"]
+			if self.genre == "scifi":
+				fonts = [fonts_base + "Game Of Squids.ttf", fonts_base + "OriginTech personal use.ttf",
+				         fonts_base + "Robot Invaders.ttf", fonts_base + "Robot Invaders Italic.ttf"]
+			elif self.genre == "crime":
+				fonts = [fonts_base + "Fargo.otf", fonts_base + "Molot.otf", fonts_base + "Maiden Crimes.otf",
+				         fonts_base + "LEMONMILK-Regular.otf"]
+			else:
+				fonts = [fonts_base + "HungryCharlie-Bold.ttf", fonts_base + "HungryCharlie-Serif.ttf",
+				         fonts_base + "LEMONMILK-BoldItalic.otf", fonts_base + "LEMONMILK-Regular.otf",
+				         fonts_base + "handwriting-draft_free-version.ttf"]
 			font_name = random.choice(fonts)
 			myfont = pygame.font.Font(font_name, letter_height // 2)
-		for word in self.title.split(" ") + self.writer_name.split(" "):
-			print("Size thing")
+		for i, word in enumerate(self.title.split(" ") + [self.writer_name]):
 			test_s = myfont.render(word, False, (0, 0, 0))
-			while test_s.get_width() > self.can_width:
-				letter_height = int(floor(letter_height) * 0.8)
+			while test_s.get_width() > self.can_width or test_s.get_height() * (i + 1) + (
+					letter_height // 2) > self.can_height:
+				letter_height = letter_height - 1
 				myfont = pygame.font.Font(font_name, letter_height)
 				test_s = myfont.render(word, False, (0, 0, 0))
-		color = random.choice(colors)
+		if self.genre == "scifi":
+			color = random.choice(scifi_text_colors)
+		elif self.genre == "crime":
+			color = random.choice(crime_text_colors)
+		else:
+			color = random.choice(colors)
 		myfont_small = pygame.font.Font(font_name, letter_height // 2)
+		myfont.underline = False
 		# Draw the words
 		y = 0
 		for word in self.title.split(" "):
 			text_s = myfont.render(word, False, color)
 			SCREEN.blit(source=text_s, dest=(
 				self.can_topleft[0] + self.can_width // 2 - text_s.get_width() // 2, self.can_topleft[1] + y))
-			y += letter_height
-		y -= letter_height // 2
-		y += 5
+			y += text_s.get_height()
+		myfont.underline = False
 		text_s = myfont_small.render("by", False, color)
 		SCREEN.blit(source=text_s,
 		            dest=(self.can_topleft[0] + self.can_width // 2 - text_s.get_width() // 2, self.can_topleft[1] + y))
-		y += letter_height // 2
-		for name in self.writer_name.split(" "):
-			text_s = myfont.render(name, False, color)
+		y += text_s.get_height()
+		if not separate:
+			text_s = myfont.render(self.writer_name, False, color)
 			SCREEN.blit(source=text_s, dest=(
 				self.can_topleft[0] + self.can_width // 2 - text_s.get_width() // 2, self.can_topleft[1] + y))
-			y += letter_height
+		else:
+			for name in self.writer_name.split(" "):
+				text_s = myfont.render(name, False, color)
+				SCREEN.blit(source=text_s, dest=(
+					self.can_topleft[0] + self.can_width // 2 - text_s.get_width() // 2, self.can_topleft[1] + y))
+				y += text_s.get_height()
 
 
 def draw_tablecloth_1(pattern_total_size, pattern_inner_size, bg_color, line_color, line_width):

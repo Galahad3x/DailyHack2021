@@ -471,7 +471,7 @@ def adventure_heist_bank(book):
 		"Hands Up",
 		"Payday",
 		"The Bandits of " + book.setting_name,
-		"The " + book.setting_name + " Job",
+		book.setting_name + " Job",
 	]
 	return random.choice(titles)
 
